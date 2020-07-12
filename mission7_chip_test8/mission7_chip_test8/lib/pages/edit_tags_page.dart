@@ -435,52 +435,47 @@ class _ChipsEditState extends State<ChipsEdit> {
         child: new CompositedTransformFollower(
           offset: Offset(0.0,1),
           link: layerLink,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: 550,
-            ),
-            child: Material(
-              child: Container(
-                color: Colors.white,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height - 190,
-                        //height: _suggestion?.length *56.0 ?? 0,
-                        child: new ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(0.0),
-                          itemCount: _suggestion?.length ?? 0,
-                          itemBuilder: (BuildContext context, int index){
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border(top: BorderSide(width: 1, color: Colors.grey[100]),
-                                    bottom: BorderSide(width: 1, color: Colors.grey[100]))),
-                              child: ListTile(
-                                title: Container(
-                                  child: SubstringHighlight(
-                                    text: _suggestion[index].tagName,
-                                    term: _textFieldController.text,
-                                  ),
+          child: Material(
+            child: Container(
+              color: Colors.white,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height - 200,
+                      //height: _suggestion?.length *56.0 ?? 0,
+                      child: new ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(0.0),
+                        itemCount: _suggestion?.length ?? 0,
+                        itemBuilder: (BuildContext context, int index){
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border(top: BorderSide(width: 1, color: Colors.grey[100]),
+                                  bottom: BorderSide(width: 1, color: Colors.grey[100]))),
+                            child: ListTile(
+                              title: Container(
+                                child: SubstringHighlight(
+                                  text: _suggestion[index].tagName,
+                                  term: _textFieldController.text,
                                 ),
-                                leading: Image.asset("assets/icon_tag.png"),
-                                onTap: (){
-                                  setState(() {
-                                    widget.inputs.add(_suggestion[index].tagName);
-                                    focusNode.unfocus();
-                                    _textFieldController.clear();
-                                  });
-                                },
                               ),
-                            );
-                          },
-                          //separatorBuilder: (BuildContext context, int index) => Divider(height:1.0,color: Colors.grey),
-                        ),
+                              leading: Image.asset("assets/icon_tag.png"),
+                              onTap: (){
+                                setState(() {
+                                  widget.inputs.add(_suggestion[index].tagName);
+                                  focusNode.unfocus();
+                                  _textFieldController.clear();
+                                });
+                              },
+                            ),
+                          );
+                        },
+                        //separatorBuilder: (BuildContext context, int index) => Divider(height:1.0,color: Colors.grey),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
