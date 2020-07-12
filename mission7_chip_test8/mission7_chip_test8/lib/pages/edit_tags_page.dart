@@ -40,6 +40,8 @@ class _ChipsEditState extends State<ChipsEdit> {
   List<AppProfile> _suggestion = []; //推荐列表
 
   var placeHolder = "\u{2006}";
+  ///过滤emoji
+  RegExp regexp=RegExp("[^\\u0020-\\u007E\\u00A0-\\u00BE\\u2E80-\\uA4CF\\uF900-\\uFAFF\\uFE30-\\uFE4F\\uFF00-\\uFFEF\\u0080-\\u009F\\u2000-\\u201f\r\n]");
 
   @override
   void initState() {
@@ -287,7 +289,9 @@ class _ChipsEditState extends State<ChipsEdit> {
               keyboardType: TextInputType.text,
               inputFormatters: <TextInputFormatter>[
                 LengthLimitingTextInputFormatter(8), //最多不能超过8个字符
-                BlacklistingTextInputFormatter.singleLineFormatter, //限制单行输入BlacklistingTextInputFormatter(RegExp(" ")),//控制空格输入
+                BlacklistingTextInputFormatter.singleLineFormatter, //限制单行输入
+                BlacklistingTextInputFormatter(RegExp(" ")),//控制空格输入
+                BlacklistingTextInputFormatter(regexp)
               ],
               /**
                * 输入背景添加判断
@@ -442,14 +446,18 @@ class _ChipsEditState extends State<ChipsEdit> {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: _suggestion?.length *56.0 ?? 0,
-                        child: new ListView.separated(
+                        height: MediaQuery.of(context).size.height - 190,
+                        //height: _suggestion?.length *56.0 ?? 0,
+                        child: new ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0.0),
                           itemCount: _suggestion?.length ?? 0,
                           itemBuilder: (BuildContext context, int index){
                             return Container(
+                              decoration: BoxDecoration(
+                                border: Border(top: BorderSide(width: 1, color: Colors.grey[100]),
+                                    bottom: BorderSide(width: 1, color: Colors.grey[100]))),
                               child: ListTile(
                                 title: Container(
                                   child: SubstringHighlight(
@@ -468,7 +476,7 @@ class _ChipsEditState extends State<ChipsEdit> {
                               ),
                             );
                           },
-                          separatorBuilder: (BuildContext context, int index) => Divider(height:1.0,color: Colors.grey),
+                          //separatorBuilder: (BuildContext context, int index) => Divider(height:1.0,color: Colors.grey),
                         ),
                       ),
                     ],
